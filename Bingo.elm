@@ -6,12 +6,39 @@ import Html.Events exposing (..)
 
 import String exposing (toUpper, repeat, trimRight)
 
-newEntry phrase points id = -- a data object
-  { phrase = phrase,
+-- DATAs
+newEntry phrase points id =
+  { phrase = phrase, -- indentation, fool
     points = points,
     wasSpoken = False,
     id = id
   }
+
+initialModel =
+  { entries = [
+    newEntry "derp" 200 1,
+    newEntry "wow" 300 1,
+    newEntry "much elm" 100 1,
+    newEntry "elm is cool" 500 1,
+    newEntry "very view" 400 4
+    ]
+  }
+
+-- UPDATES
+
+type Action  -- actions are data types
+  = NoOp    -- just declaring stuff here, no behavior defined yet
+  | Sort    -- compiler will complain if declare here but not defined in update
+
+update action model = -- stateless!
+  case action of
+    NoOp ->
+      model
+    Sort ->
+      { model | entries = List.sortBy .points model.entries }
+
+
+-- VIEW STUFF STARTS HERE
 
 -- defining functions
 -- FUNCTION arg1 arg2 etc.
@@ -27,28 +54,30 @@ pageHeader =
 
 pageFooter = 
   footer [ ]
-    [ a 
-      [ href "https://www.mergermarket.com" ] 
-      [ text "MM" ] 
-    ]
+  [ a 
+  [ href "https://www.mergermarket.com" ] 
+  [ text "MM" ] 
+  ]
 
-entryList =
-  ul [ ]
-   [ 
-     entryItem (newEntry "Future Stuff" 100 1),
-     entryItem (newEntry "Old stuff" 200 1)
-   ]
+entryList entries =
+  ul [ ] (List.map entryItem entries)
 
 entryItem entry =
   li [ ]
-    [ span [ class "phrase" ] [ text entry.phrase ],
-      span [ class "points" ] [ text (toString entry.points) ]
-    ]
+  [ span [ class "phrase" ] [ text entry.phrase ],
+    span [ class "points" ] [ text (toString entry.points) ]
+  ]
+
+view model =
+  div [ id "container" ] 
+  [ pageHeader, 
+  entryList model.entries, 
+  pageFooter ]
+
+-- wire it all together
 
 main =
-  -- title "hello" 5
-  -- Html.text (String.reverse (String.repeat 3 (String.toUpper "bingo")))
-  div [ id "container" ] 
-    [ pageHeader, 
-      entryList, 
-      pageFooter ]
+  -- view (update NoOp initialModel)
+  initialModel
+    |> update Sort
+    |> view

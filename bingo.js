@@ -10308,6 +10308,7 @@ Elm.Bingo.make = function (_elm) {
       _U.list([A2($Html.span,_U.list([$Html$Attributes.$class("phrase")]),_U.list([$Html.text(entry.phrase)]))
               ,A2($Html.span,_U.list([$Html$Attributes.$class("points")]),_U.list([$Html.text($Basics.toString(entry.points))]))]));
    };
+   var entryList = function (entries) {    return A2($Html.ul,_U.list([]),A2($List.map,entryItem,entries));};
    var pageFooter = A2($Html.footer,
    _U.list([]),
    _U.list([A2($Html.a,_U.list([$Html$Attributes.href("https://www.mergermarket.com")]),_U.list([$Html.text("MM")]))]));
@@ -10315,15 +10316,37 @@ Elm.Bingo.make = function (_elm) {
       return $Html.text($String.trimRight(A2($String.repeat,times,$String.toUpper(A2($Basics._op["++"],message," ")))));
    });
    var pageHeader = A2($Html.h1,_U.list([]),_U.list([A2(title,"hello",5)]));
+   var view = function (model) {
+      return A2($Html.div,_U.list([$Html$Attributes.id("container")]),_U.list([pageHeader,entryList(model.entries),pageFooter]));
+   };
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      if (_p0.ctor === "NoOp") {
+            return model;
+         } else {
+            return _U.update(model,{entries: A2($List.sortBy,function (_) {    return _.points;},model.entries)});
+         }
+   });
+   var Sort = {ctor: "Sort"};
+   var NoOp = {ctor: "NoOp"};
    var newEntry = F3(function (phrase,points,id) {    return {phrase: phrase,points: points,wasSpoken: false,id: id};});
-   var entryList = A2($Html.ul,_U.list([]),_U.list([entryItem(A3(newEntry,"Future Stuff",100,1)),entryItem(A3(newEntry,"Old stuff",200,1))]));
-   var main = A2($Html.div,_U.list([$Html$Attributes.id("container")]),_U.list([pageHeader,entryList,pageFooter]));
+   var initialModel = {entries: _U.list([A3(newEntry,"derp",200,1)
+                                        ,A3(newEntry,"wow",300,1)
+                                        ,A3(newEntry,"much elm",100,1)
+                                        ,A3(newEntry,"elm is cool",500,1)
+                                        ,A3(newEntry,"very view",400,4)])};
+   var main = view(A2(update,Sort,initialModel));
    return _elm.Bingo.values = {_op: _op
                               ,newEntry: newEntry
+                              ,initialModel: initialModel
+                              ,NoOp: NoOp
+                              ,Sort: Sort
+                              ,update: update
                               ,title: title
                               ,pageHeader: pageHeader
                               ,pageFooter: pageFooter
                               ,entryList: entryList
                               ,entryItem: entryItem
+                              ,view: view
                               ,main: main};
 };
