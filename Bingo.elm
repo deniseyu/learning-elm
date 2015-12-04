@@ -27,9 +27,17 @@ pageFooter =
 
 entryList =
   ul [ ]
-   [ li [ ] [ text "Future-proof" ] ]
+   [ entryItem "Future-Proof" 100,
+      entryItem "Doing Stuff" 200
+   ]
+
+entryItem phrase points =
+  li [ ]
+    [ span [ class "phlsdkfrase" ] [ text phrase ],
+      span [ class "points" ] [ text (toString points) ]
+    ]
 
 main =
   -- title "hello" 5
   -- Html.text (String.reverse (String.repeat 3 (String.toUpper "bingo")))
-  div [ ] [ pageHeader, pageFooter ]
+  div [ id "container" ] [ pageHeader, entryList, pageFooter ]

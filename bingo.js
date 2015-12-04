@@ -10302,7 +10302,13 @@ Elm.Bingo.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $String = Elm.String.make(_elm);
    var _op = {};
-   var entryList = A2($Html.ul,_U.list([]),_U.list([A2($Html.li,_U.list([]),_U.list([$Html.text("Future-proof")]))]));
+   var entryItem = F2(function (phrase,points) {
+      return A2($Html.li,
+      _U.list([]),
+      _U.list([A2($Html.span,_U.list([$Html$Attributes.$class("phlsdkfrase")]),_U.list([$Html.text(phrase)]))
+              ,A2($Html.span,_U.list([$Html$Attributes.$class("points")]),_U.list([$Html.text($Basics.toString(points))]))]));
+   });
+   var entryList = A2($Html.ul,_U.list([]),_U.list([A2(entryItem,"Future-Proof",100),A2(entryItem,"Doing Stuff",200)]));
    var pageFooter = A2($Html.footer,
    _U.list([]),
    _U.list([A2($Html.a,_U.list([$Html$Attributes.href("https://www.mergermarket.com")]),_U.list([$Html.text("MM")]))]));
@@ -10310,6 +10316,6 @@ Elm.Bingo.make = function (_elm) {
       return $Html.text($String.trimRight(A2($String.repeat,times,$String.toUpper(A2($Basics._op["++"],message," ")))));
    });
    var pageHeader = A2($Html.h1,_U.list([]),_U.list([A2(title,"hello",5)]));
-   var main = A2($Html.div,_U.list([]),_U.list([pageHeader,pageFooter]));
-   return _elm.Bingo.values = {_op: _op,title: title,pageHeader: pageHeader,pageFooter: pageFooter,entryList: entryList,main: main};
+   var main = A2($Html.div,_U.list([$Html$Attributes.id("container")]),_U.list([pageHeader,entryList,pageFooter]));
+   return _elm.Bingo.values = {_op: _op,title: title,pageHeader: pageHeader,pageFooter: pageFooter,entryList: entryList,entryItem: entryItem,main: main};
 };
