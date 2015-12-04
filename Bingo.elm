@@ -3,6 +3,7 @@ module Bingo where
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import StartApp.Simple as StartApp
 
 import String exposing (toUpper, repeat, trimRight)
 
@@ -68,16 +69,25 @@ entryItem entry =
     span [ class "points" ] [ text (toString entry.points) ]
   ]
 
-view model =
+view address model =
   div [ id "container" ] 
   [ pageHeader, 
   entryList model.entries, 
+  button 
+    [ class "sort", onClick address Sort ] -- bind event handler
+    [ text "omg i'm a button" ], -- sends Sort to address on click event
   pageFooter ]
 
 -- wire it all together
 
 main =
   -- view (update NoOp initialModel)
-  initialModel
-    |> update Sort
-    |> view
+  --initialModel
+   -- |> update Sort
+    --|> view
+
+  StartApp.start
+  { model = initialModel,
+    view = view,
+    update = update
+  }
