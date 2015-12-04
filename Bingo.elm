@@ -6,6 +6,13 @@ import Html.Events exposing (..)
 
 import String exposing (toUpper, repeat, trimRight)
 
+newEntry phrase points id = -- a data object
+  { phrase = phrase,
+    points = points,
+    wasSpoken = False,
+    id = id
+  }
+
 -- defining functions
 -- FUNCTION arg1 arg2 etc.
 title message times =
@@ -27,17 +34,21 @@ pageFooter =
 
 entryList =
   ul [ ]
-   [ entryItem "Future-Proof" 100,
-      entryItem "Doing Stuff" 200
+   [ 
+     entryItem (newEntry "Future Stuff" 100 1),
+     entryItem (newEntry "Old stuff" 200 1)
    ]
 
-entryItem phrase points =
+entryItem entry =
   li [ ]
-    [ span [ class "phlsdkfrase" ] [ text phrase ],
-      span [ class "points" ] [ text (toString points) ]
+    [ span [ class "phrase" ] [ text entry.phrase ],
+      span [ class "points" ] [ text (toString entry.points) ]
     ]
 
 main =
   -- title "hello" 5
   -- Html.text (String.reverse (String.repeat 3 (String.toUpper "bingo")))
-  div [ id "container" ] [ pageHeader, entryList, pageFooter ]
+  div [ id "container" ] 
+    [ pageHeader, 
+      entryList, 
+      pageFooter ]
